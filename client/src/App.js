@@ -2,7 +2,6 @@ import './App.css';
 import { Folders } from './Folders';
 import {BrowserRouter, Route, Routes, NavLink, Link} from 'react-router-dom'
 import Files from "./Files";
-import { Authenfication } from './Authenfication';
 
 function App() {
   return (

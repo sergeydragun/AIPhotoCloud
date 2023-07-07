@@ -90,9 +90,7 @@ export class Folders extends Component{
             method: "GET",
             headers: {"Accept": "application/json"},          
         })
-        .then(response => response.json())
         .then(data => {
-            console.log(data);
             this.refreshList();
         });
     }
@@ -148,7 +146,7 @@ export class Folders extends Component{
                                     </button>
                                 </td>
                                 <td>
-                                    {fold.InFilesCountsInformation}
+                                    {fold.InFilesCountsInformation != "" ? fold.InFilesCountsInformation : <div>Not recognized yet or objects are missing</div>}
                                 </td>
                             </tr>
                             )}

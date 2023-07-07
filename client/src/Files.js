@@ -115,18 +115,6 @@ class Files extends Component{
 
     }
 
-    MLClick(){
-        fetch(consts.API_URL + "ML/CheckPhotos",{
-            method: "GET",
-            headers: {"Accept": "application/json"},          
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            this.refreshList();
-        });
-    }
-
     render(){
         
         const Id = this.props.params.id
@@ -139,14 +127,8 @@ class Files extends Component{
         return(
             <div>
 
-                <button type="button"
-                className="btn btn-primary m-2 float-end"
-                onClick={() => this.MLClick()}>
-                    Analyze pictures
-                </button>
-
                 <div className='p-2 w-50 bd-highlight'>
-                    <span className='input-group-text'>Upload Files</span>
+                    <span className='input-group-text'>Files</span>
                     <input className='p-2 w-50 bd-highlight'id="inputUpload" type="file" onChange={this.imageUpload}/>
                 </div>
                 
@@ -179,7 +161,7 @@ class Files extends Component{
                                     </button>
                                 </td>
                                 <td>
-                                    {file.CountsInformation}
+                                    {file.CountsInformation != "" ? file.CountsInformation : <div>Not recognized yet or objects are missing</div>}
                                 </td>
                             </tr>
                             )}

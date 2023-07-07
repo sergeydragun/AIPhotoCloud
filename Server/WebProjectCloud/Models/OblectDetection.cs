@@ -18,13 +18,17 @@ namespace WebProjectCloud.Models
             MLContext mlContext = new MLContext();
             var path = new PathConsts();
 
+            var folders = _context.FolderModel.ToList();
+
             try
             {
-                foreach(var folder in _context.FolderModel)
+                foreach(var folder in folders)
                 {
-                    var images = _context.Files.Where(q => q.FolderModel.Id == folder.Id)
-                        .Select(f => new ImageNetData { ImagePath = f.Path, Label = f.Name })
+                    var files = _context.Files.Where(q => q.FolderModel.Id == folder.Id).ToList();
+
+                    var images = files.Select(f => new ImageNetData { ImagePath = f.Path, Label = f.Name })
                         .ToList();
+
                     IDataView imageDataView = mlContext.Data.LoadFromEnumerable(images);
 
                     var modelScorer = new OnnxModelScorer(path.ImageFolder, path.ModelFilePath, mlContext);
@@ -37,12 +41,16 @@ namespace WebProjectCloud.Models
                         .Select(probability => parser.ParseOutputs(probability))
                         .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
-                    for (int i = 0; i < _context.Files.Count(); i++)
+                    int count = _context.Files.Count();
+
+                    for (int i = 0; i < count; i++)
                     {
-                        var fileName = _context.Files.ElementAt(i).Name;
+                        var file = files.ElementAt(i);
+                        var fileName = file.Name;
                         var detectedObjects = boundingBoxes.ElementAt(i);
                         string countInfo = String.Join(", ", detectedObjects.GroupBy(p => p.Label).Select(p => $"{p.Key} : {p.Count()}").ToList());
-                        _context.Files.ElementAt(i).CountsInformation = countInfo;                     
+                        file.CountsInformation = countInfo;
+                        _context.Files.Update(file);                    
                     }
 
                     folder.InFilesCountsInformation = String.Join(", ", boundingBoxes
@@ -50,6 +58,7 @@ namespace WebProjectCloud.Models
                         .GroupBy(q => q.Label)
                         .Select(p => $"{p.Key} : {p.Count()}").ToList());
 
+                    _context.FolderModel.Update(folder);
                 }
 
                 _context.SaveChanges();
