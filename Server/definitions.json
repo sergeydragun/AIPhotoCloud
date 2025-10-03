@@ -1,0 +1,36 @@
+{
+  "rabbit_version": "3.9",
+  "users": [
+    {
+      "name": "local_jobs",
+      "password_hash": "904aef5935d2bc8ff45650dd238a7b3a28b5045661243565f979826a9a0a2658",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ""
+    },
+    {
+      "name": "adminuser",
+      "password_hash": "bffe8bd169327686cfbd8ca9a79e71567a35d79c6daf11a9aa011237329775da",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "\/"
+    },
+  ],
+  "permissions": [
+    {
+      "user": "local_jobs",
+      "vhost": "\/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "parameters": [],
+  "policies": [],
+  "queues": [],
+  "exchanges": [],
+  "bindings": []
+}

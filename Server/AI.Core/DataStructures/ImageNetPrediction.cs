@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace PhotoCloud.DataStructures
+namespace AI.Core.DataStructures
 {
     public class ImageNetPrediction
     {

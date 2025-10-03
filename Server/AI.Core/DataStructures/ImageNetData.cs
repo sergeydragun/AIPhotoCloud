@@ -1,7 +1,6 @@
 ﻿using Microsoft.ML.Data;
-using PhotoCloud.Models;
 
-namespace PhotoCloud.DataStructures
+namespace AI.Core.DataStructures
 {
     public class ImageNetData
     {

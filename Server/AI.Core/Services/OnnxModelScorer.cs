@@ -1,11 +1,12 @@
 ﻿using AI.Core.Configurations;
+using AI.Core.DataStructures;
+using AI.Core.Interfaces;
+using AI.Core.YoloParser;
 using Microsoft.Extensions.Options;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using PhotoCloud.DataStructures;
-using PhotoCloud.YoloParser;
 
-namespace PhotoCloud.Models
+namespace AI.Core.Services
 {
     public struct ImageNetSettings
     {

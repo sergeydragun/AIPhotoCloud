@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.StaticFiles;
-using PhotoCloud.Models;
 
 namespace PhotoCloud.Controllers
 {
@@ -10,12 +9,10 @@ namespace PhotoCloud.Controllers
     public class FileController : Controller
     {
         private readonly IWebHostEnvironment _enviroment;
-        private readonly ApplicationContext _context;
 
-        public FileController(ApplicationContext context,IWebHostEnvironment enviroment)
+        public FileController(IWebHostEnvironment enviroment)
         {
             _enviroment = enviroment;
-            _context = context;
         }
 
         [Route("{id}")]
@@ -104,4 +101,4 @@ namespace PhotoCloud.Controllers
         }
     }
     
-}
+}*/

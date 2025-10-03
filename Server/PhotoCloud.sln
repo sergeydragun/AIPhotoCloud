@@ -7,6 +7,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoCloud.WebApp", "PhotoC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Core", "AI.Core\AI.Core.csproj", "{B8CB908E-D892-4834-91CC-12AB4A62A7FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infrastructure.Data\Infrastructure.Data.csproj", "{EA657D77-363C-47C6-A7C3-5E19AC66DA86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Storage", "Infrastructure.Storage\Infrastructure.Storage.csproj", "{D20F5A1E-D445-4C6B-9135-2A27DE6358BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.Worker", "AI.Worker\AI.Worker.csproj", "{EB7753F7-E46A-4117-B2D1-0E8C20A10F54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infractructure.DTO", "Infractructure.DTO\Infractructure.DTO.csproj", "{3AECD3BB-30FD-4768-98AB-23E274BD55F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{B29B229C-86F5-4D4F-8D04-B0ACD115900F}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		docker-compose-test-enviroment.yml = docker-compose-test-enviroment.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{25DD5CF0-5EA0-4B31-9EF8-F48664B6B222}"
+	ProjectSection(SolutionItems) = preProject
+		definitions.json = definitions.json
+		rabbitmq.conf = rabbitmq.conf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +41,22 @@ Global
 		{B8CB908E-D892-4834-91CC-12AB4A62A7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8CB908E-D892-4834-91CC-12AB4A62A7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8CB908E-D892-4834-91CC-12AB4A62A7FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA657D77-363C-47C6-A7C3-5E19AC66DA86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA657D77-363C-47C6-A7C3-5E19AC66DA86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA657D77-363C-47C6-A7C3-5E19AC66DA86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA657D77-363C-47C6-A7C3-5E19AC66DA86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D20F5A1E-D445-4C6B-9135-2A27DE6358BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D20F5A1E-D445-4C6B-9135-2A27DE6358BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D20F5A1E-D445-4C6B-9135-2A27DE6358BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D20F5A1E-D445-4C6B-9135-2A27DE6358BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB7753F7-E46A-4117-B2D1-0E8C20A10F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB7753F7-E46A-4117-B2D1-0E8C20A10F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB7753F7-E46A-4117-B2D1-0E8C20A10F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB7753F7-E46A-4117-B2D1-0E8C20A10F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AECD3BB-30FD-4768-98AB-23E274BD55F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AECD3BB-30FD-4768-98AB-23E274BD55F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AECD3BB-30FD-4768-98AB-23E274BD55F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AECD3BB-30FD-4768-98AB-23E274BD55F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

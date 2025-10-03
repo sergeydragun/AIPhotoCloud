@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 
-
-namespace PhotoCloud.YoloParser
+namespace AI.Core.YoloParser
 {
     public class BoundingBoxDimensions : DimensionsBase { }
 

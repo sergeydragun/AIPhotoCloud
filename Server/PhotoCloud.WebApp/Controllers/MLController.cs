@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PhotoCloud.Models;
+﻿/*
+using Microsoft.AspNetCore.Mvc;
 
 namespace PhotoCloud.Controllers
 {
@@ -22,3 +22,4 @@ namespace PhotoCloud.Controllers
 
     }
 }
+*/

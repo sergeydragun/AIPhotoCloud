@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML;
 
-namespace PhotoCloud.Models;
+namespace AI.Core.Interfaces;
 
 public interface IOnnxModelScorer
 {

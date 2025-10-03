@@ -1,4 +1,4 @@
-﻿namespace PhotoCloud.Models
+﻿namespace AI.Core.Interfaces
 {
     public interface IObjectDetection
     {
