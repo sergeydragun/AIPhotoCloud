@@ -37,7 +37,7 @@ namespace PhotoCloud.Controllers
 
                 string? filename = postedFile?.FileName;
                 var physicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Photos", filename);
-                 
+
                 physicalPath = WorkWithFiles.GetFileName(physicalPath);
 
                 var resultName = Path.GetFileName(physicalPath);
@@ -67,8 +67,8 @@ namespace PhotoCloud.Controllers
             string file_path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Photos", filename);
             string file_type;
             var forfile_type = new FileExtensionContentTypeProvider().TryGetContentType(file_path, out file_type);
-            
-            return PhysicalFile(file_path, file_type); 
+
+            return PhysicalFile(file_path, file_type);
         }
 
         [Route("{id}/{filename}")]
@@ -94,11 +94,12 @@ namespace PhotoCloud.Controllers
         public static string GetFileName(string filePath)
         {
             if (System.IO.File.Exists(filePath))
-            {               
+            {
                 return GetFileName(Path.ChangeExtension(filePath, null) + " (c)" + Path.GetExtension(filePath));
             }
             return filePath;
         }
     }
-    
+
 }*/
+

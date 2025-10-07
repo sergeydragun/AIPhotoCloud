@@ -11,9 +11,9 @@ public class JobService : IJobService
     {
         _jobRepository = jobRepository;
     }
-    
+
     public async Task CreateProcessingJobForFileAsync(
-        Guid userId, 
+        Guid userId,
         Guid targetFileId)
     {
         var job = new Job()
@@ -24,7 +24,7 @@ public class JobService : IJobService
             JobStatus = JobStatus.Pending,
             SubmittedAt = DateTime.UtcNow
         };
-        
+
         _jobRepository.Create(job);
         await _jobRepository.SaveChangesAsync();
     }

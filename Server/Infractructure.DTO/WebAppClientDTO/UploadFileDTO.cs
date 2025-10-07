@@ -21,4 +21,3 @@ public record CompleteUploadDTO(
     Guid FileId,
     string ImpotencyKey
 );
-

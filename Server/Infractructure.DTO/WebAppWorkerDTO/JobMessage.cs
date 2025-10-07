@@ -8,5 +8,4 @@ public record JobMessage(
     DateTime SubmittedAt,
     string CorrelationId,
     string ImpotencyKey
-    );
-    
+);

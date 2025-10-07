@@ -17,12 +17,10 @@ public class AzureService : IAzureService
 
     public AzureService(IOptions<AzureStorageConfiguration> azureStorageConfiguration)
     {
-        _cfg =  azureStorageConfiguration.Value;
+        _cfg = azureStorageConfiguration.Value;
         _serviceClient = new BlobServiceClient(azureStorageConfiguration.Value.ConnectionString);
-        
-        
     }
-    
+
     public async Task EnsureContainerExistsAsync()
     {
         var containerClient = _serviceClient.GetBlobContainerClient(_cfg.ContainerName);
@@ -42,15 +40,15 @@ public class AzureService : IAzureService
             Resource = "b",
             ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(minutes)
         };
-        
+
         sasBuilder.SetPermissions(BlobAccountSasPermissions.Create | BlobAccountSasPermissions.Write);
         var sasToken = sasBuilder.ToSasQueryParameters(credential).ToString();
-        
+
         var uploadUri = new UriBuilder(blobUri) { Query = sasToken }.Uri;
-        
+
         return uploadUri;
     }
-    
+
     public async Task<(Stream Stream, string ContentType)?> GetImageAsync(string blobName,
         CancellationToken cancellationToken = default)
     {
@@ -69,7 +67,7 @@ public class AzureService : IAzureService
         string contentType = download.Value.ContentType;
         return (ms, contentType);
     }
-    
+
     public async Task<bool> BlobExistsAsync(string blobName, CancellationToken ct = default)
     {
         var containerClient = _serviceClient.GetBlobContainerClient(_cfg.ContainerName);
@@ -77,7 +75,7 @@ public class AzureService : IAzureService
         var exists = await blobClient.ExistsAsync(ct);
         return exists.Value;
     }
-    
+
     public async Task<BlobProperties?> GetBlobPropertiesAsync(string blobName, CancellationToken ct = default)
     {
         var containerClient = _serviceClient.GetBlobContainerClient(_cfg.ContainerName);
@@ -93,7 +91,8 @@ public class AzureService : IAzureService
         }
     }
 
-    public async Task<Result> ValidateBlobPropertiesAsync(string blobName, long expectedSizeBytes, CancellationToken ct = default)
+    public async Task<Result> ValidateBlobPropertiesAsync(string blobName, long expectedSizeBytes,
+        CancellationToken ct = default)
     {
         var blobProperties = await GetBlobPropertiesAsync(blobName, ct);
 
@@ -101,7 +100,7 @@ public class AzureService : IAzureService
         {
             return Result.Success();
         }
-        
+
         return Result.Failure("Blob properties validation failed");
     }
 }

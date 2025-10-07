@@ -38,12 +38,16 @@ namespace AI.Core.Services
         private ITransformer LoadModel(string modelLocation)
         {
             var data = _mlContext.Data.LoadFromEnumerable(new List<ImageNetData>());
-            var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
-                .Append(mlContext.Transforms.ResizeImages(outputColumnName: "image", imageWidth: ImageNetSettings.imageWidth, 
+            var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "",
+                    inputColumnName: nameof(ImageNetData.ImagePath))
+                .Append(mlContext.Transforms.ResizeImages(outputColumnName: "image",
+                    imageWidth: ImageNetSettings.imageWidth,
                     imageHeight: ImageNetSettings.imageHeight, inputColumnName: "image"))
                 .Append(mlContext.Transforms.ExtractPixels(outputColumnName: "image"))
-                .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[] { 
-                    TinyYoloModelSettings.ModelOutput }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput}));
+                .Append(mlContext.Transforms.ApplyOnnxModel(modelFile: modelLocation, outputColumnNames: new[]
+                {
+                    TinyYoloModelSettings.ModelOutput
+                }, inputColumnNames: new[] { TinyYoloModelSettings.ModelInput }));
             var model = pipeline.Fit(data);
             return model;
         }

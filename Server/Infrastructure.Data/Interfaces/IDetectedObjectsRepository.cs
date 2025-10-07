@@ -4,5 +4,4 @@ namespace Infrastructure.Data.Repositories;
 
 public interface IDetectedObjectsRepository : IBaseRepository<DetectedObject>
 {
-    
 }

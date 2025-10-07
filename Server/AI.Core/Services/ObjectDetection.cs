@@ -24,7 +24,7 @@ namespace AI.Core.Services
 
             try
             {
-                foreach(var folder in folders)
+                foreach (var folder in folders)
                 {
                     var files = _context.Files.Where(q => q.FolderModel.Id == folder.Id).ToList();
 
@@ -40,8 +40,8 @@ namespace AI.Core.Services
 
                     var boundingBoxes =
                         probabilities
-                        .Select(probability => parser.ParseOutputs(probability))
-                        .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
+                            .Select(probability => parser.ParseOutputs(probability))
+                            .Select(boxes => parser.FilterBoundingBoxes(boxes, 5, .5F));
 
                     int count = _context.Files.Count();
 
@@ -50,9 +50,10 @@ namespace AI.Core.Services
                         var file = files.ElementAt(i);
                         var fileName = file.Name;
                         var detectedObjects = boundingBoxes.ElementAt(i);
-                        string countInfo = String.Join(", ", detectedObjects.GroupBy(p => p.Label).Select(p => $"{p.Key} : {p.Count()}").ToList());
+                        string countInfo = String.Join(", ",
+                            detectedObjects.GroupBy(p => p.Label).Select(p => $"{p.Key} : {p.Count()}").ToList());
                         file.CountsInformation = countInfo;
-                        _context.Files.Update(file);                    
+                        _context.Files.Update(file);
                     }
 
                     folder.InFilesCountsInformation = String.Join(", ", boundingBoxes

@@ -4,7 +4,6 @@ namespace AI.Core.DataStructures
 {
     public class ImageNetPrediction
     {
-        [ColumnName("grid")]
-        public float[] PredictedLabels;
+        [ColumnName("grid")] public float[] PredictedLabels;
     }
 }

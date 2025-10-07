@@ -20,11 +20,11 @@ public class FileFolderService : IFileFolderService
     private readonly ILogger _logger;
 
     public FileFolderService(IFileModelRepository fileModelRepository,
-                             IFolderRepository folderRepository,
-                             IUserRepository userRepository,
-                             IAzureService azureService,
-                             IJobService jobService,
-                             ILogger logger)
+        IFolderRepository folderRepository,
+        IUserRepository userRepository,
+        IAzureService azureService,
+        IJobService jobService,
+        ILogger logger)
     {
         _fileModelRepository = fileModelRepository;
         _folderRepository = folderRepository;
@@ -33,13 +33,13 @@ public class FileFolderService : IFileFolderService
         _jobService = jobService;
         _logger = logger;
     }
-    
+
     public async Task CreateFolderAsync(Guid? parentFolderId, Guid userId, string folderName)
     {
         var user = await _userRepository.FindById(userId);
-        
+
         var parentFolder = parentFolderId == null
-            ? null 
+            ? null
             : await _folderRepository.FindById(parentFolderId ?? Guid.Empty);
 
         var newFolder = new Folder()
@@ -51,24 +51,24 @@ public class FileFolderService : IFileFolderService
                 : $"{parentFolder.Path}/{folderName}",
             CreatedOn = DateTime.UtcNow,
             ModifiedOn = DateTime.UtcNow,
-            
+
             UserId = userId,
             ParentFolderId = parentFolderId
         };
-        
+
         _folderRepository.Create(newFolder);
     }
 
     public async Task<Uri> CreateURlForFileAsync(Guid? parentFolderId,
-        Guid userId, 
-        string fileName, 
+        Guid userId,
+        string fileName,
         string contentType,
         int expectedSizeBytes)
     {
         var parentFolder = parentFolderId == null
             ? null
             : await _folderRepository.FindById(parentFolderId ?? Guid.Empty);
-        
+
         var filePath = parentFolder == null ? $"{userId.ToString()}/{fileName}" : $"{parentFolder.Path}/{fileName}";
 
         var url = _azureService.GetUploadUrlSas(filePath);
@@ -86,7 +86,7 @@ public class FileFolderService : IFileFolderService
             ModifiedOn = DateTime.UtcNow,
             ExpectedSizeBytes = expectedSizeBytes
         };
-        
+
         _fileModelRepository.Create(file);
         await _fileModelRepository.SaveChangesAsync();
 
@@ -100,7 +100,7 @@ public class FileFolderService : IFileFolderService
             return _folderRepository
                 .GetBaseUserFolders(userId);
         }
-        
+
         return _folderRepository.GetCurrentFolders(parentFolderId ?? Guid.Empty);
     }
 
@@ -159,16 +159,16 @@ public class FileFolderService : IFileFolderService
     public async Task<Result> ProcessCompleteUpload(Guid userId, Guid fileId)
     {
         var file = await _fileModelRepository.FindById(fileId);
-        
+
         if (file.UserId != userId)
             return Result.Failure("File not uploaded");
 
         var blobResult = await _azureService.ValidateBlobPropertiesAsync(file.BlobUri, file.ExpectedSizeBytes);
-        if(blobResult.IsFailure)
+        if (blobResult.IsFailure)
             return Result.Failure(blobResult.Error);
-        
+
         await _jobService.CreateProcessingJobForFileAsync(userId, fileId);
-        
+
         return Result.Success();
     }
 

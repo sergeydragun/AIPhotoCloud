@@ -14,7 +14,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _context = context;
         _dbSet = _context.Set<TEntity>();
     }
-    
+
     public void Create(TEntity entity)
     {
         _dbSet.Add(entity);

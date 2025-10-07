@@ -4,7 +4,9 @@ namespace AI.Core.YoloParser
 {
     public class YoloOutputParser
     {
-        class CellDimensions : DimensionsBase { }
+        class CellDimensions : DimensionsBase
+        {
+        }
 
         public const int ROW_COUNT = 13;
         public const int COL_COUNT = 13;
@@ -89,6 +91,7 @@ namespace AI.Core.YoloParser
             {
                 predictedClasses[predictedClass] = modelOutput[GetOffset(x, y, predictedClass + predictedClassOffset)];
             }
+
             return Softmax(predictedClasses);
         }
 
@@ -133,9 +136,11 @@ namespace AI.Core.YoloParser
                     for (int box = 0; box < BOXES_PER_CELL; box++)
                     {
                         var channel = (box * (CLASS_COUNT + BOX_INFO_FEATURE_COUNT));
-                        BoundingBoxDimensions boundingBoxDimensions = ExtractBoundingBoxDimensions(yoloModelOutputs, row, column, channel);
+                        BoundingBoxDimensions boundingBoxDimensions =
+                            ExtractBoundingBoxDimensions(yoloModelOutputs, row, column, channel);
                         float confidence = GetConfidence(yoloModelOutputs, row, column, channel);
-                        CellDimensions mappedBoundingBox = MapBoundingBoxToCell(row, column, box, boundingBoxDimensions);
+                        CellDimensions mappedBoundingBox =
+                            MapBoundingBoxToCell(row, column, box, boundingBoxDimensions);
 
                         if (confidence < threshold)
                             continue;
@@ -162,7 +167,6 @@ namespace AI.Core.YoloParser
                         });
                     }
                 }
-
             }
 
             return boxes;
@@ -177,10 +181,10 @@ namespace AI.Core.YoloParser
                 isActiveBoxes[i] = true;
 
             var sortedBoxes = boxes.Select((b, i) => new { Box = b, Index = i })
-                    .OrderByDescending(b => b.Box.Confidence)
-                    .ToList();
+                .OrderByDescending(b => b.Box.Confidence)
+                .ToList();
 
-            var results= new List<YoloBoundingBox>();
+            var results = new List<YoloBoundingBox>();
 
             for (int i = 0; i < boxes.Count; i++)
             {

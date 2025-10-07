@@ -11,12 +11,11 @@ public class BlobInitializer : IHostedService
     {
         _azureService = azureService;
     }
-    
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await _azureService.EnsureContainerExistsAsync();
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-    
 }

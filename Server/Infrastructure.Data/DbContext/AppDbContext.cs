@@ -16,7 +16,6 @@ namespace Infrastructure.Data.DbContext
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +28,7 @@ namespace Infrastructure.Data.DbContext
             modelBuilder.ApplyConfiguration(new JobEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OutboxEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserCredentialsEntityTypeConfiguration());
         }
     }
 }

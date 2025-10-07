@@ -14,12 +14,12 @@ public class BlobEventsController : ControllerBase
     {
         _fileFolderService = fileFolderService;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Events([FromBody] JsonElement json)
     {
         var jsonResult = await _fileFolderService.ProcessBlobEvent(json);
-        
+
         return Ok(jsonResult);
     }
 }

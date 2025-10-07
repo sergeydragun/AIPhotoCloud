@@ -15,8 +15,8 @@ public class Job
     public string LastError { get; set; }
     public string? ImpotencyKey { get; set; }
     public string CorrelationId { get; set; }
-    
-    public User User  { get; set; }
+
+    public User User { get; set; }
     public FileModel? TargetFile { get; set; }
     public Folder? TargetFolder { get; set; }
 }

@@ -12,11 +12,11 @@ public class FileModel
     public FileStatus FileStatus { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
-    
+
     public User User { get; set; }
     public Folder? Folder { get; set; }
     public List<DetectedObject> DetectedObjects { get; set; }
-    
+
     public List<Job> Jobs { get; set; }
 }
 

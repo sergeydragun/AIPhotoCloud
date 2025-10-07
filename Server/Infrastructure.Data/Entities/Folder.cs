@@ -10,10 +10,10 @@ public class Folder
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
     public bool IsDeleted { get; set; }
-    
+
     public User User { get; set; }
     public List<FileModel> Files { get; set; }
     public List<Folder> ChildrenFolders { get; set; }
-    public Folder? ParentFolder  { get; set; }
+    public Folder? ParentFolder { get; set; }
     public List<Job>? Jobs { get; set; }
 }

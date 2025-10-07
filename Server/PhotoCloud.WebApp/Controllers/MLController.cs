@@ -8,7 +8,7 @@ namespace PhotoCloud.Controllers
     public class MLController : Controller
     {
         private IObjectDetection _detection;
-        public MLController(IObjectDetection detection) 
+        public MLController(IObjectDetection detection)
         {
             _detection = detection;
         }
@@ -23,3 +23,4 @@ namespace PhotoCloud.Controllers
     }
 }
 */
+

@@ -9,7 +9,7 @@ public class DetectedObjectsEntityTypeConfiguration : IEntityTypeConfiguration<D
     public void Configure(EntityTypeBuilder<DetectedObject> builder)
     {
         builder.HasIndex(x => x.Id);
-        
+
         builder.HasOne(x => x.FileModel)
             .WithMany(x => x.DetectedObjects)
             .HasForeignKey(x => x.FileId);
