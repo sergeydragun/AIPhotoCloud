@@ -19,5 +19,13 @@ public record ResponseUploadDTO(
 
 public record CompleteUploadDTO(
     Guid FileId,
-    string ImpotencyKey
+    string IdempotencyKey
 );
+
+public class CompleteUploadResultDto
+{
+    public Guid FileId { get; set; }
+    public string FileStatus { get; set; } = null!;
+    public Guid? JobId { get; set; }             
+    public string? Message { get; set; }        
+}

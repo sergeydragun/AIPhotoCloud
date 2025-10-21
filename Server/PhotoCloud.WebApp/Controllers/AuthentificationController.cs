@@ -5,7 +5,7 @@ using PhotoCloud.Interfaces;
 
 namespace PhotoCloud.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/auth")]
 [ApiController]
 public class AuthentificationController : BaseController
 {

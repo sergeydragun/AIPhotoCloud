@@ -5,11 +5,11 @@ namespace Infrastructure.Data.Repositories;
 public interface IBaseRepository<TEntity> where TEntity : class
 {
     void Create(TEntity entity);
-    Task<TEntity> FindById(Guid id);
+    Task<TEntity> FindById(Guid id, CancellationToken cancellationToken = default);
     IQueryable<TEntity> FindAll();
     IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     void Remove(TEntity entity);
     void Update(TEntity entity);
     void SaveChanges();
-    Task SaveChangesAsync();
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

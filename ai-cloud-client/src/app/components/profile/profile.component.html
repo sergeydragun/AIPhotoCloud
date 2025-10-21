@@ -1,0 +1,46 @@
+<ng-container
+  *ngTemplateOutlet="user ? userTemplate : noUser; context: { $implicit: user }">
+</ng-container>
+
+<ng-template #userTemplate let-u>
+  <div class="min-h-screen flex items-center justify-center p-6 bg-gray-50">
+    <div class="w-full max-w-xl bg-white rounded-2xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">Профиль</h2>
+
+      <dl class="grid grid-cols-1 gap-2">
+        <div class="flex justify-between">
+          <dt class="font-medium">ID</dt>
+          <dd>{{ u.sub ?? u.id ?? '—' }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="font-medium">Имя</dt>
+          <dd>{{ u.name ?? u.given_name ?? '—' }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="font-medium">Email</dt>
+          <dd>{{ u.email ?? '—' }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="font-medium">Токен истекает</dt>
+          <dd>{{ isTokenExpired() ? 'Да' : 'Нет' }}</dd>
+        </div>
+      </dl>
+
+      <div class="mt-6 flex gap-2">
+        <button (click)="logout()"
+                class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Выйти</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noUser>
+  <div class="min-h-screen flex items-center justify-center p-6 bg-gray-50">
+    <div class="w-full max-w-xl bg-white rounded-2xl shadow p-6 text-center">
+      <p class="text-sm text-gray-600">Пользователь не авторизован.</p>
+      <div class="mt-4">
+        <a routerLink="/login" class="text-indigo-600 hover:underline">Войти</a>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,45 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
+        <h1 class="text-2xl font-semibold mb-4">Вход</h1>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Email / Логин / Телефон</label>
+                <input formControlName="identifier" type="text" placeholder="Email, логин или телефон"
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <div *ngIf="form.controls['identifier'].invalid && form.controls['identifier'].touched"
+                    class="text-red-500 text-sm mt-1">
+                    Укажите идентификатор
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Пароль</label>
+                <input formControlName="password" type="password" placeholder="Пароль"
+                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+            </div>
+
+            <div class="flex items-center justify-between">
+                <label class="inline-flex items-center space-x-2">
+                    <input type="checkbox" formControlName="rememberMe" class="rounded" />
+                    <span class="text-sm">Запомнить</span>
+                </label>
+                <a routerLink="/forgot" class="text-sm text-indigo-600 hover:underline">Забыли пароль?</a>
+            </div>
+
+            <div>
+                <button [disabled]="loading"
+                    class="w-full py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
+                    {{ loading ? 'Входим...' : 'Войти' }}
+                </button>
+            </div>
+
+            <div *ngIf="error" class="text-red-600 text-sm">{{ error }}</div>
+
+            <div class="text-sm text-center">
+                Нет аккаунта?
+                <a routerLink="/register" class="text-indigo-600 hover:underline">Зарегистрироваться</a>
+            </div>
+        </form>
+    </div>
+</div>

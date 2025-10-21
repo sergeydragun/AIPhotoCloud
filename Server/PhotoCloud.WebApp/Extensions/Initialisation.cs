@@ -51,4 +51,11 @@ public static class Initialisation
 
         return services;
     }
+
+    public static IServiceCollection AddOpenApiExt(this IServiceCollection services)
+    {
+        services.AddOpenApi();
+        
+        return services;
+    }
 }

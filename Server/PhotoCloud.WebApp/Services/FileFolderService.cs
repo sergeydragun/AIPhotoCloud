@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using CSharpFunctionalExtensions;
+using Infractructure.DTO.WebAppClientDTO;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using Infrastructure.Data.Repositories;
@@ -156,21 +157,108 @@ public class FileFolderService : IFileFolderService
         return new();
     }
 
-    public async Task<Result> ProcessCompleteUpload(Guid userId, Guid fileId)
+    public async Task<CompleteUploadResultDto?> CompleteUploadAsync(
+        Guid fileId,
+        string? idempotencyKey,
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
-        var file = await _fileModelRepository.FindById(fileId);
+        var file = await _fileModelRepository.FindById(fileId, cancellationToken);
+
+        if (file == null)
+            throw new FileNotFoundException($"File with id '{fileId}' not found.");
 
         if (file.UserId != userId)
-            return Result.Failure("File not uploaded");
+            throw new UnauthorizedAccessException("User is not owner of the file.");
 
-        var blobResult = await _azureService.ValidateBlobPropertiesAsync(file.BlobUri, file.ExpectedSizeBytes);
-        if (blobResult.IsFailure)
-            return Result.Failure(blobResult.Error);
+        if (file.FileStatus == FileStatus.Processing || file.FileStatus == FileStatus.Processed)
+        {
+            var existingJob = await _db.Jobs
+                .Where(j => j.TargetFileId == fileId)
+                .OrderByDescending(j => j.SubmittedAt)
+                .FirstOrDefaultAsync(cancellationToken);
 
-        await _jobService.CreateProcessingJobForFileAsync(userId, fileId);
+            return new CompleteUploadResultDto
+            {
+                FileId = file.Id,
+                FileStatus = file.FileStatus.ToString(),
+                JobId = existingJob?.Id,
+                Message = existingJob != null ? "Job already exists for file." : "File already processed/processing."
+            };
+        }
 
-        return Result.Success();
+        var properties = await _azureService.GetBlobPropertiesAsync(file.BlobUri, cancellationToken);
+        if (properties == null)
+        {
+            throw new InvalidOperationException("Uploaded blob not found in storage.");
+        }
+
+        if (file.ExpectedSizeBytes != properties.ContentLength)
+        {
+            _logger.Warning("Size mismatch for file {FileId}: expected {Expected} actual {Actual}", fileId, file.ExpectedSizeBytes, properties.ContentLength);
+            throw new InvalidOperationException("Uploaded blob size does not match expected size.");
+        }
+        
+        using var tx = await _db.Database.BeginTransactionAsync(cancellationToken);
+        try
+        {
+            var job = new Job
+            {
+                Id = Guid.NewGuid(),
+                OwnerId = userId,
+                Type = JobType.FileProcessing,     
+                TargetFileId = file.Id,
+                Status = JobStatus.Pending,
+                SubmittedAt = DateTime.UtcNow,
+                IdempotencyKey = idempotencyKey
+            };
+
+            file.Status = FileStatus.Processing;
+            file.ProcessingStartedAt = DateTime.UtcNow;
+            file.ModelVersion = file.ModelVersion ?? "default"; 
+
+            _db.Jobs.Add(job);
+            _db.Files.Update(file);
+
+            var eventPayload = new
+            {
+                jobId = job.Id,
+                ownerId = job.OwnerId,
+                fileId = file.Id,
+                blobPath = file.BlobPath,
+                modelVersion = file.ModelVersion,
+                submittedAt = job.SubmittedAt
+            };
+
+            var outbox = new OutboxMessage
+            {
+                Id = Guid.NewGuid(),
+                OccurredOn = DateTime.UtcNow,
+                Type = "JobCreated",
+                Payload = JsonSerializer.Serialize(eventPayload),
+                Processed = false
+            };
+            _db.OutboxMessages.Add(outbox);
+
+            await _db.SaveChangesAsync(cancellationToken);
+
+            await tx.CommitAsync(cancellationToken);
+
+            return new CompleteUploadResultDto
+            {
+                FileId = file.Id,
+                FileStatus = file.Status.ToString(),
+                JobId = job.Id,
+                Message = "File validated and job queued."
+            };
+        }
+        catch
+        {
+            await tx.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
+
 
     private bool ValidatePossibilityOfChanging(User user, Folder parentFolder)
     {

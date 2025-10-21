@@ -38,6 +38,14 @@ namespace PhotoCloud
             builder.Services.AddPhotoCloudAuthentification(builder.Configuration);
 
             var app = builder.Build();
+            
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+            }
+            
+            app.UseApiExceptionHandling();
+            
             app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();

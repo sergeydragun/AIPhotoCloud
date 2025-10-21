@@ -20,9 +20,9 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbSet.Add(entity);
     }
 
-    public Task<TEntity> FindById(Guid id)
+    public Task<TEntity> FindById(Guid id, CancellationToken cancellationToken = default)
     {
-        return _dbSet.FindAsync(id).AsTask()!;
+        return _dbSet.FindAsync([id], cancellationToken).AsTask()!;
     }
 
     public IQueryable<TEntity> FindAll()
@@ -50,8 +50,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _context.SaveChanges();
     }
 
-    public Task SaveChangesAsync()
+    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return _context.SaveChangesAsync();
+        return _context.SaveChangesAsync(cancellationToken);
     }
 }
